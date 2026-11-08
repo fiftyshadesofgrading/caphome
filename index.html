@@ -16,7 +16,7 @@
     --serif:Georgia,"Times New Roman",serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html{background:var(--bg)}
+  html{background:var(--bg); overflow-x:clip}  /* the stamp's oversized drop-in pose shouldn't widen the page on phones */
   body{
     min-height:100vh; display:flex; align-items:center; justify-content:center; padding:32px 16px;
     background:
@@ -209,10 +209,17 @@
 
 <script>
 (() => {
+  // Fake deals. Each field stays short (≲24 chars) so it fits one line on a phone.
   const sets = [
-    {Date:"January 12, 2027", Client:"Alder & Finch LLP", Counterparty:"M. Okafor", State:"Maine", Amount:"$4,800", Days:"30"},
-    {Date:"March 3, 2027", Client:"Mapleview Clinic", Counterparty:"Harborline Freight", State:"Vermont", Amount:"$12,250", Days:"45"},
-    {Date:"June 18, 2027", Client:"Lakeshore Partners", Counterparty:"Q. Tran", State:"Oregon", Amount:"$975", Days:"15"}
+    {Date:"October 21, 1975", Client:"Fenway Grounds Crew", Counterparty:"Green Monster Paint Co.", State:"Massachusetts", Amount:"$1,918", Days:"86"},
+    {Date:"July 30, 1966", Client:"Dagenham Rovers FC", Counterparty:"Mud & Studs Boot Co.", State:"England & Wales", Amount:"£4 and a pint", Days:"90"},
+    {Date:"March 2, 1998", Client:"Clause Library Trust", Counterparty:"Guided Interview Co-op", State:"Massachusetts", Amount:"4,000 IF statements", Days:"30"},
+    {Date:"May 9, 1972", Client:"Piaffe & Passage Ltd.", Counterparty:"Collected Canter LLC", State:"Kentucky", Amount:"1,200 sugar cubes", Days:"20"},
+    {Date:"June 4, 1971", Client:"Chukker & Divot LLP", Counterparty:"Newport Pony Lines", State:"Rhode Island", Amount:"6 ponies and a trailer", Days:"6"},
+    {Date:"September 9, 2011", Client:"Answer File Holdings", Counterparty:"Choicebox Partners", State:"Vermont", Amount:"$0 (pro bono)", Days:"45"},
+    {Date:"May 5, 1973", Client:"Saratoga Hay & Oats", Counterparty:"Big Red Stables", State:"New York", Amount:"1,200 bales of timothy", Days:"31"},
+    {Date:"April 1, 1970", Client:"Terrace End Supporters", Counterparty:"Bovril & Pie Ltd.", State:"England & Wales", Amount:"£12 and a half-time pie", Days:"14"},
+    {Date:"January 15, 2027", Client:"Legacy Template Trust", Counterparty:"Variable Rescue LLC", State:"Delaware", Amount:"17,000 orphan variables", Days:"60"}
   ];
   const $ = id => document.getElementById(id);
   const live = $("live"), stack = $("stack"), gutter = $("gutter");
