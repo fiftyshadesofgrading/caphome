@@ -11,7 +11,7 @@
     --bg:#0a0d13; --bg-2:#141a26; --card:#11161f; --ink:#e9e3d6; --soft:#8b93a5; --mute:#596276;
     --brass:#c9a35a; --brass-dim:rgba(201,163,90,.32); --chip:#231f17; --chip-ink:#e2c486;
     --rule:#222937; --dot:rgba(233,227,214,.045);
-    --fs:17px; --lh:34px;
+    --fs:17px; --lh:34px; --gw:34px;
     --mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
     --serif:Georgia,"Times New Roman",serif;
   }
@@ -58,15 +58,17 @@
   .meta b{color:var(--soft); font-weight:500}
 
   /* pleading-paper body: numbered gutter + text */
-  .body{position:relative; display:grid; grid-template-columns:auto 1fr; column-gap:18px}
+  .body{position:relative; display:grid; grid-template-columns:var(--gw) 1fr; column-gap:18px}
+  /* contain:size = the numbers never add height; the column just stretches to the text and clips extras */
   .gutter{
+    contain:size; overflow:hidden;
     padding-right:12px; border-right:3px double var(--brass-dim);
     font:10px/var(--lh) var(--mono); color:var(--mute); text-align:right; user-select:none;
   }
   .gutter span{display:block; height:var(--lh)}
 
   /* every copy stacks in one cell; invisible copies reserve the max size */
-  .stack{position:relative; z-index:1; display:grid; font:var(--fs)/var(--lh) var(--serif); padding-bottom:var(--lh)}  /* blank line for the stamp */
+  .stack{position:relative; z-index:1; align-self:start; display:grid; font:var(--fs)/var(--lh) var(--serif); padding-bottom:var(--lh)}  /* blank line for the stamp */
   .stack > *{grid-area:1/1}
   .ghost{visibility:hidden}
   .ghost .v.filled::after{content:""; display:inline-block; width:4px}  /* room for the cursor */
@@ -143,7 +145,7 @@
     .facts{grid-template-columns:1fr}
     .facts div{border-left:0; border-top:1px solid var(--rule)}
     .facts div:first-child{border-top:0}
-    :root{--fs:16px; --lh:32px}
+    :root{--fs:16px; --lh:32px; --gw:28px}
     .doc{padding:24px 16px 16px}
     .body{column-gap:12px}
     .gutter{padding-right:8px}
@@ -204,7 +206,7 @@
     </div>
   </section>
 
-  <footer>© 2026 | legalautomation.io | Boston, MA</footer>
+  <footer>© 2026 | legalautomation.io</footer>
 </main>
 
 <script>
@@ -252,7 +254,8 @@
   // Pleading-paper line numbers, matched to the reserved height.
   const numberLines = () => {
     const lh = parseFloat(getComputedStyle(stack).lineHeight);
-    const n = Math.max(1, Math.round(stack.getBoundingClientRect().height / lh));
+    // The text's height never depends on the gutter, so this can't feed back on itself.
+    const n = Math.max(1, Math.ceil(stack.getBoundingClientRect().height / lh - 0.1));
     if (gutter.childElementCount !== n)
       gutter.innerHTML = Array.from({length: n}, (_, i) => "<span>" + (i + 1) + "</span>").join("");
   };
